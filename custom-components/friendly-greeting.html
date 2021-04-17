@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Elements</title>
+</head>
+<body>
+<friendly-greeting></friendly-greeting>
+<friendly-greeting name="Bob" lang="uk"></friendly-greeting>
+<friendly-greeting name="Bob" lang="uk" shout></friendly-greeting>
+<friendly-greeting name="Bob" lang="ua"></friendly-greeting>
+<friendly-greeting name="Bob" lang="ua" shout></friendly-greeting>
+</body>
+<script>
+    class HelloWorldElement extends HTMLElement {
+
+        constructor() {
+            super();
+            this.name = this.getAttribute('name') || 'World';
+            this.lang = this.getAttribute('lang') || 'en';
+            this.shout = (this.getAttribute("shout") !== null);
+        }
+
+        connectedCallback() {
+            let message = '';
+
+            if (this.lang && this.lang === 'ua') {
+                message = `Привіт, ${ this.name }!`;
+            } else {
+                message = `Hello ${ this.name }!`;
+            }
+
+            if (this.shout) message = message.toUpperCase();
+            this.innerHTML = `<h1>${message}</h1>`;
+        }
+    }
+    customElements.define("friendly-greeting", HelloWorldElement);
+</script>
+</html>
